@@ -50,7 +50,7 @@ public class RefactorHandler extends AbstractHandler {
             // ====================
             // Etapa 0a: For → While
             // ====================
-            ForMarkerVisitor forMarker = new ForMarkerVisitor(cu);
+            ForMarkerVisitor forMarker = new ForMarkerVisitor();
             cu.accept(forMarker);
 
             if (!forMarker.getMarkedFors().isEmpty()) {
@@ -73,7 +73,7 @@ public class RefactorHandler extends AbstractHandler {
             // ====================
             // Etapa 0b: ForEach → While con Iterator
             // ====================
-            ForEachMarkerVisitor foreachMarker = new ForEachMarkerVisitor(cu);
+            ForEachMarkerVisitor foreachMarker = new ForEachMarkerVisitor();
             cu.accept(foreachMarker);
 
             if (!foreachMarker.getMarkedFors().isEmpty()) {
@@ -104,7 +104,7 @@ public class RefactorHandler extends AbstractHandler {
             // Etapa 2: Refactorizar loops anotados
             // ====================
             ASTRewrite rewrite = ASTRewrite.create(cu.getAST());
-            LoopRewriter rewriter = new LoopRewriter(rewrite, unit);
+            LoopRewriter rewriter = new LoopRewriter(rewrite);
             cu.accept(rewriter);
 
             // =================================

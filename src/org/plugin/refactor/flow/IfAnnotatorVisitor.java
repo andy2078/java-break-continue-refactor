@@ -28,12 +28,12 @@ public class IfAnnotatorVisitor extends ASTVisitor {
                     // misma condición → mismo grupo
                     if (currentGroup == 0) {
                         currentGroup = ++groupCounter; // arrancamos nuevo grupo
-                        // marcar también al anterior
+                        // marcar tambien al anterior
                         ((IfStatement) statements.get(i - 1)).setProperty("mergeGroup", currentGroup);
                     }
                     ifStmt.setProperty("mergeGroup", currentGroup);
                 } else {
-                    // condición distinta, reinicio
+                    // condicion distinta, reinicio
                     currentGroup = 0;
                 }
 

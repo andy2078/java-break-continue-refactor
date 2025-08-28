@@ -108,10 +108,6 @@ public class FlowAnnotator extends ASTVisitor {
         return candidate;
     }
 
-    
-    /*
-     * En uso actual
-     */
     @SuppressWarnings("unchecked")
     private void markFollowingStatements(Statement breakStmt, String property, String name) {
         ASTNode parent = breakStmt.getParent();

@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.BreakStatement;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ContinueStatement;
 import org.eclipse.jdt.core.dom.DoStatement;
 import org.eclipse.jdt.core.dom.ForStatement;
@@ -15,10 +14,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 
 public class ForMarkerVisitor extends ASTVisitor {
     private final Set<ForStatement> markedFors = new HashSet<>();
-//    private CompilationUnit cu;
     
-    public ForMarkerVisitor(CompilationUnit cu) {
-    	//this.cu = cu;
+    public ForMarkerVisitor() { 
     }
 
     @Override

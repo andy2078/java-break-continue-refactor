@@ -34,7 +34,7 @@ public class IfMergerVisitor extends ASTVisitor {
             Object group = ifStmt.getProperty("mergeGroup");
 
             if (group != null) {
-                // recolectar todos los If con mismo merge_group seguidos
+                // recolectar todos los If con mismo mergeGroup seguidos
                 List<Statement> mergedStatements = new ArrayList<>();
                 Expression condition = ifStmt.getExpression();
                 int j = i;

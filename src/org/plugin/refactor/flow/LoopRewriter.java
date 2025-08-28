@@ -2,7 +2,6 @@ package org.plugin.refactor.flow;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -28,11 +27,9 @@ import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 public class LoopRewriter extends ASTVisitor {
 	
     private final ASTRewrite rewrite;
-//    private ICompilationUnit unit;
 
-    public LoopRewriter(ASTRewrite rewrite, ICompilationUnit unit) {
+    public LoopRewriter(ASTRewrite rewrite) {
         this.rewrite = rewrite;
-  //      this.unit = unit;
     }
 
     @Override
@@ -127,7 +124,7 @@ public class LoopRewriter extends ASTVisitor {
             VariableDeclarationStatement decl = ast.newVariableDeclarationStatement(frag);
             decl.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
 
-            // insertar declaración despues del loop 
+            // insertar declaracion despues del loop 
             insertDeclarationFirst(loopNode, decl);
         }
     }
@@ -160,7 +157,7 @@ public class LoopRewriter extends ASTVisitor {
     }
 
     /**
-     * Agrupar sentencias marcadas con "mover" en if (nombre) { ... }
+     * Agrupar sentencias marcadas con "move" en if (name) { ... }
      * Ejecutado en endVisit para que ya se hayan reemplazado los break.
      */
     @SuppressWarnings("unchecked")
@@ -185,7 +182,6 @@ public class LoopRewriter extends ASTVisitor {
 	            List<Statement> group = new ArrayList<>();
 	            while (j < n) {
 	                Statement s2 = stmts.get(j);
-	                //String mover2 = (String) s2.getProperty("mover");
 	                    group.add(s2);
 	                    j++;
 	            }
@@ -197,7 +193,6 @@ public class LoopRewriter extends ASTVisitor {
 	            List<Statement> group = new ArrayList<>();
 	            while (j < n) {
 	                Statement s2 = stmts.get(j);
-	                //String mover2 = (String) s2.getProperty("moverContinuar");
 	                    group.add(s2);
 	                    j++;
 	            }
@@ -209,11 +204,10 @@ public class LoopRewriter extends ASTVisitor {
 	            List<Statement> group = new ArrayList<>();
 	            while (j < n) {
 	                Statement s2 = stmts.get(j);
-	                //String mover2 = (String) s2.getProperty("mover");
 	                    group.add(s2);
 	                    j++;
 	            }
-	            groupIntoIf(node, moveAfterBreak, moveAfterContinue); // VER
+	            groupIntoIf(node, moveAfterBreak, moveAfterContinue); 
             }
             i = j;
         }
@@ -252,7 +246,7 @@ public class LoopRewriter extends ASTVisitor {
 
                 ifStmt.setThenStatement(thenBlock);
 
-                // Reemplazamos la sentencia original por el if(...){ copiaConCambios }
+                // Reemplaza la sentencia original por el if(...){ copiaConCambios }
                 lr.replace(s, ifStmt, null);
             }
             else if (varName.equals(s.getProperty("moveAfterContinue"))) {
@@ -267,7 +261,7 @@ public class LoopRewriter extends ASTVisitor {
 
                 ifStmt.setThenStatement(thenBlock);
 
-                // Reemplazamos la sentencia original por el if(...){ copiaConCambios }
+                // Reemplaza la sentencia original por el if(...){ copiaConCambios }
                 lr.replace(s, ifStmt, null);
             }
         }
@@ -279,7 +273,7 @@ public class LoopRewriter extends ASTVisitor {
         AST ast = bloque.getAST();
         ListRewrite lr = rewrite.getListRewrite(bloque, Block.STATEMENTS_PROPERTY);
 
-        // Snapshot para no iterar y modificar la misma lista a la vez
+        // copia para no iterar y modificar la misma lista a la vez
         List<Statement> original = new ArrayList<>((List<Statement>) bloque.statements());
 
         for (Statement s : original) {
@@ -288,7 +282,7 @@ public class LoopRewriter extends ASTVisitor {
             	continue;
 
             String move = prop.toString();
-            // ⚠️ Sólo agrupamos si coincide con alguna de las dos variables
+            // agrupamos si coincide con alguna de las dos variables
             if (move.equals(varName1) || move.equals(varName2)) {
                 // Construir if (varName1 && varName2)
                 IfStatement ifStmt = ast.newIfStatement();
@@ -308,7 +302,7 @@ public class LoopRewriter extends ASTVisitor {
 
                 ifStmt.setThenStatement(thenBlock);
 
-                // Reemplazamos la sentencia original por el if(...){ copia }
+                // Reemplaza la sentencia original por el if(...){ copia }
                 lr.replace(s, ifStmt, null);
             }
         }
